@@ -1,0 +1,23 @@
+#!/bin/sh
+gcc -c benchmarking/main.c -o benchmarking/object_files/main
+gcc -c benchmarking/global.c -o benchmarking/object_files/global
+gcc -c benchmarking/input_0.c -o benchmarking/object_files/input_0
+gcc -c benchmarking/input_1.c -o benchmarking/object_files/input_1
+gcc -c benchmarking/input_2.c -o benchmarking/object_files/input_2
+gcc -c benchmarking/input_3.c -o benchmarking/object_files/input_3
+gcc -c benchmarking/input_4.c -o benchmarking/object_files/input_4
+gcc -c benchmarking/input_5.c -o benchmarking/object_files/input_5
+gcc -c benchmarking/input_6.c -o benchmarking/object_files/input_6
+gcc -c benchmarking/input_7.c -o benchmarking/object_files/input_7
+gcc -c benchmarking/input_8.c -o benchmarking/object_files/input_8
+gcc -c benchmarking/input_9.c -o benchmarking/object_files/input_9
+gcc -c benchmarking/input_10.c -o benchmarking/object_files/input_10
+gcc -c benchmarking/input_11.c -o benchmarking/object_files/input_11
+gcc -c benchmarking/input_12.c -o benchmarking/object_files/input_12
+gcc -c benchmarking/input_13.c -o benchmarking/object_files/input_13
+gcc -c benchmarking/input_14.c -o benchmarking/object_files/input_14
+gcc -c benchmarking/input_15.c -o benchmarking/object_files/input_15
+gcc -c benchmarking/input_16.c -o benchmarking/object_files/input_16
+gcc -c benchmarking/input_17.c -o benchmarking/object_files/input_17
+gcc -c benchmarking/input_18.c -o benchmarking/object_files/input_18
+gcc -c benchmarking/input_19.c -o benchmarking/object_files/input_19
