@@ -1,0 +1,175 @@
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Version:                           0x1
+  Entry point address:               0x401000
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          20176 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         5
+  Size of section headers:           64 (bytes)
+  Number of section headers:         10
+  Section header string table index: 9
+
+Section Headers:
+  [Nr] Name              Type            Address          Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            0000000000000000 000000 000000 00      0   0  0
+  [ 1] .text             PROGBITS        0000000000401000 001000 0012cc 00  AX  0   0  1
+  [ 2] .rodata           PROGBITS        0000000000403000 003000 0003e8 00   A  0   0  1
+  [ 3] .eh_frame         PROGBITS        00000000004033e8 0033e8 0007f8 00   A  0   0  8
+  [ 4] .data             PROGBITS        0000000000404000 004000 00004c 00  WA  0   0  4
+  [ 5] .bss              NOBITS          000000000040404c 00404c 000004 00  WA  0   0  4
+  [ 6] .comment          PROGBITS        0000000000000000 00404c 00001f 01  MS  0   0  1
+  [ 7] .symtab           SYMTAB          0000000000000000 004070 000a38 18      8  63  8
+  [ 8] .strtab           STRTAB          0000000000000000 004aa8 0003da 00      0   0  1
+  [ 9] .shstrtab         STRTAB          0000000000000000 004e82 000047 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), l (large), p (processor specific)
+
+There are no section groups in this file.
+
+Program Headers:
+  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
+  LOAD           0x000000 0x0000000000400000 0x0000000000400000 0x000158 0x000158 R   0x1000
+  LOAD           0x001000 0x0000000000401000 0x0000000000401000 0x0012cc 0x0012cc R E 0x1000
+  LOAD           0x003000 0x0000000000403000 0x0000000000403000 0x000be0 0x000be0 R   0x1000
+  LOAD           0x004000 0x0000000000404000 0x0000000000404000 0x00004c 0x000050 RW  0x1000
+  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     
+   01     .text 
+   02     .rodata .eh_frame 
+   03     .data .bss 
+   04     
+
+There is no dynamic section in this file.
+
+There are no relocations in this file.
+No processor specific unwind information to decode
+
+Symbol table '.symtab' contains 109 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS main.c
+     2: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS global.c
+     3: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_0.c
+     4: 000000000040404c     4 OBJECT  LOCAL  DEFAULT    5 self_n
+     5: 0000000000401200    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+     6: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_1.c
+     7: 0000000000404000     4 OBJECT  LOCAL  DEFAULT    4 self_n
+     8: 0000000000401325    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+     9: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_2.c
+    10: 0000000000404004     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    11: 0000000000401418    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    12: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_3.c
+    13: 0000000000404008     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    14: 000000000040150b    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    15: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_4.c
+    16: 000000000040400c     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    17: 00000000004015fe    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    18: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_5.c
+    19: 0000000000404010     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    20: 00000000004016e7    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    21: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_6.c
+    22: 0000000000404014     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    23: 00000000004017a8    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    24: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_7.c
+    25: 0000000000404018     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    26: 0000000000401855    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    27: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_8.c
+    28: 000000000040401c     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    29: 0000000000401920    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    30: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_9.c
+    31: 0000000000404020     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    32: 00000000004019eb    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    33: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_10.c
+    34: 0000000000404024     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    35: 0000000000401ad4    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    36: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_11.c
+    37: 0000000000404028     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    38: 0000000000401b8b    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    39: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_12.c
+    40: 000000000040402c     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    41: 0000000000401c38    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    42: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_13.c
+    43: 0000000000404030     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    44: 0000000000401cf9    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    45: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_14.c
+    46: 0000000000404034     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    47: 0000000000401da6    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    48: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_15.c
+    49: 0000000000404038     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    50: 0000000000401e7b    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    51: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_16.c
+    52: 000000000040403c     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    53: 0000000000401f3c    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    54: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_17.c
+    55: 0000000000404040     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    56: 000000000040202f    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    57: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_18.c
+    58: 0000000000404044     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    59: 0000000000402154    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    60: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS input_19.c
+    61: 0000000000404048     4 OBJECT  LOCAL  DEFAULT    4 self_n
+    62: 000000000040221f    20 FUNC    LOCAL  DEFAULT    1 retrieve_self_n
+    63: 0000000000401e8f    90 FUNC    GLOBAL DEFAULT    1 announce_self_15
+    64: 00000000004010db    45 FUNC    GLOBAL DEFAULT    1 print
+    65: 0000000000401ca6    83 FUNC    GLOBAL DEFAULT    1 announce_others_12
+    66: 0000000000401d0d    90 FUNC    GLOBAL DEFAULT    1 announce_self_13
+    67: 0000000000401934    90 FUNC    GLOBAL DEFAULT    1 announce_self_8
+    68: 000000000040166c   123 FUNC    GLOBAL DEFAULT    1 announce_others_4
+    69: 0000000000402168    90 FUNC    GLOBAL DEFAULT    1 announce_self_18
+    70: 0000000000401755    83 FUNC    GLOBAL DEFAULT    1 announce_others_5
+    71: 000000000040151f    90 FUNC    GLOBAL DEFAULT    1 announce_self_3
+    72: 0000000000401ae8    90 FUNC    GLOBAL DEFAULT    1 announce_self_10
+    73: 0000000000401214    90 FUNC    GLOBAL DEFAULT    1 announce_self_0
+    74: 0000000000401bf9    63 FUNC    GLOBAL DEFAULT    1 announce_others_11
+    75: 0000000000401339    90 FUNC    GLOBAL DEFAULT    1 announce_self_1
+    76: 0000000000401f50    90 FUNC    GLOBAL DEFAULT    1 announce_self_16
+    77: 00000000004017bc    90 FUNC    GLOBAL DEFAULT    1 announce_self_6
+    78: 000000000040228d    63 FUNC    GLOBAL DEFAULT    1 announce_others_19
+    79: 0000000000401579   133 FUNC    GLOBAL DEFAULT    1 announce_others_3
+    80: 000000000040126e   183 FUNC    GLOBAL DEFAULT    1 announce_others_0
+    81: 000000000040209d   183 FUNC    GLOBAL DEFAULT    1 announce_others_17
+    82: 00000000004016fb    90 FUNC    GLOBAL DEFAULT    1 announce_self_5
+    83: 000000000040142c    90 FUNC    GLOBAL DEFAULT    1 announce_self_2
+    84: 0000000000401d67    63 FUNC    GLOBAL DEFAULT    1 announce_others_13
+    85: 0000000000401c4c    90 FUNC    GLOBAL DEFAULT    1 announce_self_12
+    86: 0000000000401108   248 FUNC    GLOBAL DEFAULT    1 print_number
+    87: 0000000000401000   219 FUNC    GLOBAL DEFAULT    1 _start
+    88: 0000000000401b42    73 FUNC    GLOBAL DEFAULT    1 announce_others_10
+    89: 0000000000401393   133 FUNC    GLOBAL DEFAULT    1 announce_others_1
+    90: 0000000000402233    90 FUNC    GLOBAL DEFAULT    1 announce_self_19
+    91: 0000000000401a59   123 FUNC    GLOBAL DEFAULT    1 announce_others_9
+    92: 0000000000401ee9    83 FUNC    GLOBAL DEFAULT    1 announce_others_15
+    93: 0000000000401dba    90 FUNC    GLOBAL DEFAULT    1 announce_self_14
+    94: 000000000040404c     0 NOTYPE  GLOBAL DEFAULT    5 __bss_start
+    95: 0000000000401816    63 FUNC    GLOBAL DEFAULT    1 announce_others_6
+    96: 0000000000401612    90 FUNC    GLOBAL DEFAULT    1 announce_self_4
+    97: 0000000000402043    90 FUNC    GLOBAL DEFAULT    1 announce_self_17
+    98: 00000000004019ff    90 FUNC    GLOBAL DEFAULT    1 announce_self_9
+    99: 0000000000401e14   103 FUNC    GLOBAL DEFAULT    1 announce_others_14
+   100: 0000000000401486   133 FUNC    GLOBAL DEFAULT    1 announce_others_2
+   101: 000000000040404c     0 NOTYPE  GLOBAL DEFAULT    4 _edata
+   102: 0000000000404050     0 NOTYPE  GLOBAL DEFAULT    5 _end
+   103: 0000000000401869    90 FUNC    GLOBAL DEFAULT    1 announce_self_7
+   104: 0000000000401b9f    90 FUNC    GLOBAL DEFAULT    1 announce_self_11
+   105: 0000000000401faa   133 FUNC    GLOBAL DEFAULT    1 announce_others_16
+   106: 00000000004018c3    93 FUNC    GLOBAL DEFAULT    1 announce_others_7
+   107: 000000000040198e    93 FUNC    GLOBAL DEFAULT    1 announce_others_8
+   108: 00000000004021c2    93 FUNC    GLOBAL DEFAULT    1 announce_others_18
+
+No version information found in this file.

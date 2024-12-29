@@ -5,7 +5,7 @@ static int self_n = 4;
 static int retrieve_self_n(int offset) { return self_n + offset; }
 
 void announce_self_4(){
-    int offset = 5;
+    int offset = 31;
     int n = retrieve_self_n(offset);
     n -= offset;
     print("This is my number: ", 19);
@@ -18,10 +18,5 @@ void announce_others_4(){
   print_number((long)self_n);
   print("\n", 1);
   // Below is a random segment of other files
-  announce_self_2();
-  announce_self_3();
-  announce_self_4();
-  announce_self_5();
-  announce_self_6();
-  announce_self_7();
+  announce_self_99();
 }

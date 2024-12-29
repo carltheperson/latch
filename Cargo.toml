@@ -4,3 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+goblin = {version = "0.9", flags = ["elf64"]}
+rayon = "1.10.0"
+scroll = "0.12.0"

@@ -73,7 +73,15 @@ def create_run_ld_script(amount):
     src = f"""#!/bin/sh
 ld -o ld_out {elf_sources}
 """
-    write_file("run_ld.sh", src)
+    write_file("../run_ld.sh", src)
+
+def create_run_latch_script(amount):
+    prefix = "benchmarking/object_files/"
+    elf_sources = " ".join([f"{prefix}main", f"{prefix}global"] + [f"{prefix}input_{n}" for n in range(amount)])
+    src = f"""#!/bin/sh
+target/release/latch {elf_sources}
+"""
+    write_file("../run_latch.sh", src)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -84,6 +92,7 @@ def main():
     create_include_file(args.amount)
     create_object_files_script(args.amount)
     create_run_ld_script(args.amount)
+    create_run_latch_script(args.amount)
 
 if __name__ == "__main__":
     main()
