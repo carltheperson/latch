@@ -1,44 +1,12 @@
 use goblin::container::{Container, Ctx};
 use goblin::elf::*;
-use goblin::mach::constants::SECTION_TYPE;
-use rayon::vec;
+use latch::{ExportedSymbol, ObjectParsingResult, Relocation, SectionRelocation, SymbolRelocation};
 use scroll::Pread;
-use section_header::{SHT_PROGBITS, SHT_RELA, SHT_SYMTAB};
-use std::io::{Read, Seek, SeekFrom};
-use sym::{STB_GLOBAL, STT_FUNC, STT_NOTYPE, STT_OBJECT, STT_SECTION};
+use sym::{STB_GLOBAL, STT_FUNC, STT_OBJECT, STT_SECTION};
 
 const R_X86_64_PC32: u32 = 2;
 
-#[derive(Debug)]
-struct ExportedSymbol {
-    index: usize,
-    offset: u64,
-    name: String,
-}
-
-#[derive(Debug)]
-struct SymbolRelocation {
-    name: String,
-    offset: u64,
-    r_addend: i64,
-}
-
-#[derive(Debug)]
-struct SectionRelocation {
-    index: usize,
-    offset: u64,
-    r_addend: i64,
-}
-
-#[derive(Debug)]
-enum Relocation {
-    Section(SectionRelocation),
-    Symbol(SymbolRelocation),
-}
-
-const ELF64_HDR_SIZE: usize = 64;
-
-pub fn parse_object(contents: Vec<u8>) -> Result<(), &'static str> {
+pub fn parse_object(contents: Vec<u8>) -> Result<ObjectParsingResult, &'static str> {
     let header = Elf::parse_header(&contents).map_err(|_| "parse elf header error")?;
     // dbg!(header.e_shoff);
     let ctx = Ctx {
@@ -59,11 +27,11 @@ pub fn parse_object(contents: Vec<u8>) -> Result<(), &'static str> {
     let str_table = &contents[sh_str_offset..sh_str_offset + sh_str_size];
 
     // Iterate over section headers and print their names
-    for header in &section_headers {
-        let name_offset = header.sh_name as usize;
-        let name = str_table.pread::<&str>(name_offset).unwrap();
-        // println!("{}", name);
-    }
+    // for header in &section_headers {
+    //     let name_offset = header.sh_name as usize;
+    //     let name = str_table.pread::<&str>(name_offset).unwrap();
+    //     // println!("{}", name);
+    // }
 
     let symtab_header = section_headers
         .iter()
@@ -131,47 +99,61 @@ pub fn parse_object(contents: Vec<u8>) -> Result<(), &'static str> {
         }
     }
 
-    let rela_text_header = section_headers
+    let mut relocations: Vec<Relocation> = vec![];
+    let rela_text_header = section_headers.iter().find(|header| {
+        let name_offset = header.sh_name as usize;
+        let name = str_table.pread::<&str>(name_offset).unwrap_or("");
+        name == ".rela.text"
+    });
+    if let Some(rela_text_header) = rela_text_header {
+        // Parse `.rela.text` entries
+        let rela_text_offset = rela_text_header.sh_offset as usize;
+        let rela_text_size = rela_text_header.sh_size as usize;
+        let rela_entry_size = rela_text_header.sh_entsize as usize;
+        for i in (0..rela_text_size).step_by(rela_entry_size) {
+            let ctx = Ctx {
+                le: scroll::Endian::Little,
+                container: Container::Big,
+            };
+            let rela: Reloc = contents
+                .pread_with(rela_text_offset + i, (true, ctx))
+                .unwrap();
+            let symbol = symbols[rela.r_sym];
+            if rela.r_type == R_X86_64_PC32 {
+                relocations.push(Relocation::Section(SectionRelocation {
+                    index: symbol.st_shndx,
+                    offset: rela.r_offset,
+                    r_addend: rela.r_addend.unwrap(),
+                }));
+            } else {
+                let name_offset = symbol.st_name as usize;
+                let name = strtab.pread::<&str>(name_offset).unwrap();
+                relocations.push(Relocation::Symbol(SymbolRelocation {
+                    name: name.to_string(),
+                    offset: rela.r_offset,
+                    r_addend: rela.r_addend.unwrap(),
+                }));
+            }
+        }
+    }
+
+    let text_section_header = section_headers
         .iter()
         .find(|header| {
             let name_offset = header.sh_name as usize;
             let name = str_table.pread::<&str>(name_offset).unwrap_or("");
-            name == ".rela.text"
+            name == ".text"
         })
-        .ok_or("No .rela.text section found")?;
+        .ok_or("No .text section found")?;
+    let text_offset = text_section_header.sh_offset as usize;
+    let text_size = text_section_header.sh_size as usize;
 
-    // Parse `.rela.text` entries
-    let rela_text_offset = rela_text_header.sh_offset as usize;
-    let rela_text_size = rela_text_header.sh_size as usize;
-    let rela_entry_size = rela_text_header.sh_entsize as usize;
-    let mut relocations: Vec<Relocation> = vec![];
-    for i in (0..rela_text_size).step_by(rela_entry_size) {
-        let ctx = Ctx {
-            le: scroll::Endian::Little,
-            container: Container::Big,
-        };
-        let rela: Reloc = contents
-            .pread_with(rela_text_offset + i, (true, ctx))
-            .unwrap();
-        let symbol = symbols[rela.r_sym];
-        if rela.r_type == R_X86_64_PC32 {
-            relocations.push(Relocation::Section(SectionRelocation {
-                index: symbol.st_shndx,
-                offset: rela.r_offset,
-                r_addend: rela.r_addend.unwrap(),
-            }));
-        } else {
-            let name_offset = symbol.st_name as usize;
-            let name = strtab.pread::<&str>(name_offset).unwrap();
-            relocations.push(Relocation::Symbol(SymbolRelocation {
-                name: name.to_string(),
-                offset: rela.r_offset,
-                r_addend: rela.r_addend.unwrap(),
-            }));
-        }
-    }
+    let text_section = contents[text_offset..text_offset + text_size].to_vec();
 
-    dbg!(relocations);
-
-    Ok(())
+    Ok(ObjectParsingResult {
+        text_contents: text_section,
+        relocations,
+        data_sections: data,
+        exported_symbols,
+    })
 }
