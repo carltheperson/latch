@@ -34,3 +34,11 @@ pub struct ObjectParsingResult {
     pub relocations: Vec<Relocation>,
     pub text_contents: Vec<u8>,
 }
+
+#[derive(Debug)]
+pub struct LinkingResult {
+    pub text_contents: Vec<u8>,
+    pub data_contents: Vec<u8>,
+    pub start_addr_from_start_of_text: usize,
+    pub data_virt_addr_start: usize,
+}

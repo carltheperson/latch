@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use latch::{ObjectParsingResult, Relocation};
+use latch::{LinkingResult, ObjectParsingResult, Relocation};
 
 const START_TEXT: usize = 0x401000;
 
@@ -10,7 +10,7 @@ struct SectionInfo {
     data_is: HashMap<usize, usize>,
 }
 
-pub fn link(objects: Vec<ObjectParsingResult>) {
+pub fn link(objects: Vec<ObjectParsingResult>) -> LinkingResult {
     let mut total_text = vec![];
     let mut total_data = vec![];
 
@@ -42,7 +42,7 @@ pub fn link(objects: Vec<ObjectParsingResult>) {
 
     let data_start = align_to_next_page(START_TEXT + total_text.len());
 
-    for (i, mut relocations) in relocations.into_iter().enumerate() {
+    for (i, relocations) in relocations.into_iter().enumerate() {
         let info = &object_section_infos[i];
         for rela in relocations {
             match rela {
@@ -68,6 +68,15 @@ pub fn link(objects: Vec<ObjectParsingResult>) {
                 }
             }
         }
+    }
+
+    let start_addr = *symbol_names_to_full_offset.get("_start").unwrap();
+
+    LinkingResult {
+        data_contents: total_data,
+        text_contents: total_text,
+        data_virt_addr_start: data_start,
+        start_addr_from_start_of_text: start_addr,
     }
 }
 
