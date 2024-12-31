@@ -7,6 +7,7 @@ const START_TEXT: usize = 0x401000;
 #[derive(Debug)]
 struct SectionInfo {
     text_i: usize,
+    /// The index of a data section to where you can find it in the big .data blob
     data_is: HashMap<usize, usize>,
 }
 
@@ -40,6 +41,7 @@ pub fn link(objects: Vec<ObjectParsingResult>) -> LinkingResult {
         total_text.extend(object.text_contents);
     }
 
+    // Where the big .data blob is started in memory
     let data_start = align_to_next_page(START_TEXT + total_text.len());
 
     for (i, relocations) in relocations.into_iter().enumerate() {
@@ -47,14 +49,19 @@ pub fn link(objects: Vec<ObjectParsingResult>) -> LinkingResult {
         for rela in relocations {
             match rela {
                 Relocation::Section(rel_inf) => {
-                    let section_addr_no_page_info = info.data_is.get(&rel_inf.index).unwrap();
-                    let section_addr =
-                        data_start + section_addr_no_page_info + rel_inf.offset as usize;
-                    let path_apply_addr = START_TEXT + rel_inf.offset as usize;
-                    let diff = section_addr - path_apply_addr;
-                    let location_to_patch = info.text_i + rel_inf.offset as usize;
+                    let section_offset = info.data_is.get(&rel_inf.index).unwrap();
 
-                    total_text[location_to_patch..location_to_patch + 4]
+                    // Where we can find this exact section start in virtual memory
+                    let section_virt_addr = data_start + section_offset;
+
+                    let text_patch_offset = info.text_i + rel_inf.offset as usize;
+
+                    let text_patch_virt_addr = START_TEXT + text_patch_offset;
+
+                    let diff = section_virt_addr as isize - text_patch_virt_addr as isize
+                        + rel_inf.r_addend as isize;
+
+                    total_text[text_patch_offset..text_patch_offset + 4]
                         .copy_from_slice(&(diff as u32).to_le_bytes());
                 }
                 Relocation::Symbol(rel_inf) => {
