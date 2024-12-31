@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use latch::{LinkingResult, ObjectParsingResult, Relocation};
+use latch::{align_to_next_page, LinkingResult, ObjectParsingResult, Relocation};
 
 const START_TEXT: usize = 0x401000;
 
@@ -78,8 +78,4 @@ pub fn link(objects: Vec<ObjectParsingResult>) -> LinkingResult {
         data_virt_addr_start: data_start,
         start_addr_from_start_of_text: start_addr,
     }
-}
-
-fn align_to_next_page(address: usize) -> usize {
-    (address + 0x1000 - 1) & !(0x1000 - 1)
 }

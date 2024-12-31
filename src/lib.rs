@@ -42,3 +42,7 @@ pub struct LinkingResult {
     pub start_addr_from_start_of_text: usize,
     pub data_virt_addr_start: usize,
 }
+
+pub fn align_to_next_page(address: usize) -> usize {
+    (address + 0x1000 - 1) & !(0x1000 - 1)
+}
