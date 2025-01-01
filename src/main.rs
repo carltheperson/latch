@@ -12,11 +12,34 @@ use std::fs::write;
 use std::path::PathBuf;
 
 fn main() {
-    let file_paths: Vec<PathBuf> = env::args().skip(1).map(PathBuf::from).collect();
+    let args: Vec<String> = env::args().collect();
+    let mut output_file = "a.out".to_string();
+    let mut file_paths: Vec<PathBuf> = Vec::new();
+    let mut i = 1;
+
+    while i < args.len() {
+        if args[i] == "-o" {
+            if i + 1 < args.len() {
+                output_file = args[i + 1].clone();
+                i += 2;
+            } else {
+                eprintln!("Error: Missing output file after -o.");
+                return;
+            }
+        } else {
+            file_paths.push(PathBuf::from(&args[i]));
+            i += 1;
+        }
+    }
+
+    if file_paths.is_empty() {
+        eprintln!("Error: No input files specified.");
+        return;
+    }
 
     let objects: Vec<ObjectParsingResult> = process_files_in_parallel(&file_paths);
     let elf = construct_elf(link(objects));
-    write("output.elf", &elf).expect("Failed to write ELF file");
+    write(output_file.as_str(), &elf).expect("Failed to write ELF file");
 }
 
 fn process_files_in_parallel(file_paths: &[PathBuf]) -> Vec<ObjectParsingResult> {
