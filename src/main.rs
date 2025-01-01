@@ -1,15 +1,15 @@
-mod elf;
-mod linking;
-mod object;
 use elf::construct_elf;
 use latch::ObjectParsingResult;
 use linking::link;
 use object::parse_object;
-use rayon::prelude::*;
 use std::env;
 use std::fs;
 use std::fs::write;
 use std::path::PathBuf;
+
+mod elf;
+mod linking;
+mod object;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -37,19 +37,15 @@ fn main() {
         return;
     }
 
-    let objects: Vec<ObjectParsingResult> = process_files_in_parallel(&file_paths);
+    let objects: Vec<ObjectParsingResult> = file_paths
+        .iter()
+        .filter_map(process_single_object_file)
+        .collect();
     let elf = construct_elf(link(objects));
     write(output_file.as_str(), &elf).expect("Failed to write ELF file");
 }
 
-fn process_files_in_parallel(file_paths: &[PathBuf]) -> Vec<ObjectParsingResult> {
-    file_paths
-        .iter()
-        .filter_map(|path| process_single_file(path))
-        .collect()
-}
-
-fn process_single_file(path: &PathBuf) -> Option<ObjectParsingResult> {
+fn process_single_object_file(path: &PathBuf) -> Option<ObjectParsingResult> {
     match fs::read(path) {
         Ok(contents) => Some(parse_object(contents).unwrap()),
         Err(err) => {

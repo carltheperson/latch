@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+pub const START_TEXT: usize = 0x401000;
+
 #[derive(Debug, Clone)]
 pub struct ExportedSymbol {
     pub index: usize,

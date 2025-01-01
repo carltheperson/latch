@@ -1,13 +1,11 @@
 use std::collections::HashMap;
 
-use latch::{align_to_next_page, LinkingResult, ObjectParsingResult, Relocation};
-
-const START_TEXT: usize = 0x401000;
+use latch::{align_to_next_page, LinkingResult, ObjectParsingResult, Relocation, START_TEXT};
 
 #[derive(Debug)]
 struct SectionInfo {
     text_i: usize,
-    /// The index of a data section to where you can find it in the big .data blob
+    /// The index of a data section to where you can find it in the .data blob
     data_is: HashMap<usize, usize>,
 }
 

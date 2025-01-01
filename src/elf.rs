@@ -1,21 +1,10 @@
 use goblin::container::{Container, Ctx};
 use goblin::elf::*;
 use header::*;
-use latch::{align_to_next_page, LinkingResult};
+use latch::{align_to_next_page, LinkingResult, START_TEXT};
 use program_header::{PF_R, PF_W, PF_X, PT_GNU_STACK, PT_LOAD};
-use scroll::{Pread, Pwrite, LE};
+use scroll::{Pwrite, LE};
 use section_header::{SHF_ALLOC, SHF_EXECINSTR, SHF_WRITE, SHT_NULL, SHT_PROGBITS, SHT_STRTAB};
-use sym::{STB_GLOBAL, STT_FUNC, STT_OBJECT};
-
-// #[derive(Debug)]
-// pub struct LinkingResult {
-//     pub text_contents: Vec<u8>,
-//     pub data_contents: Vec<u8>,
-//     pub start_addr_from_start_of_text: usize,
-//     pub data_virt_addr_start: usize,
-// }
-
-const START_TEXT: usize = 0x401000;
 
 pub fn construct_elf(info: LinkingResult) -> Vec<u8> {
     let ctx = Ctx {
@@ -25,9 +14,9 @@ pub fn construct_elf(info: LinkingResult) -> Vec<u8> {
 
     let shstrtab = b"\0.text\0.data\0.shstrtab\0".to_vec();
 
-    let elf_header_size = Header::size(ctx.clone());
-    let single_program_header_size = ProgramHeader::size(ctx.clone());
-    let single_section_header_size = SectionHeader::size(ctx.clone());
+    let elf_header_size = Header::size(ctx);
+    let single_program_header_size = ProgramHeader::size(ctx);
+    let single_section_header_size = SectionHeader::size(ctx);
 
     // Program header details (segments to load into memory: interpreter, text, data, gnu stack)
     let number_of_program_headers = 4;
@@ -59,7 +48,7 @@ pub fn construct_elf(info: LinkingResult) -> Vec<u8> {
             p_paddr: interpreter_segment_virt_addr as u64,
             p_filesz: interpreter_segment_size as u64,
             p_memsz: interpreter_segment_size as u64,
-            p_flags: interpreter_segment_flags as u32,
+            p_flags: interpreter_segment_flags,
             p_align: 0x1000,
         },
         // text
@@ -70,7 +59,7 @@ pub fn construct_elf(info: LinkingResult) -> Vec<u8> {
             p_paddr: text_segment_virt_addr as u64,
             p_filesz: text_segment_size as u64,
             p_memsz: text_segment_size as u64,
-            p_flags: text_segment_flags as u32,
+            p_flags: text_segment_flags,
             p_align: 0x1000,
         },
         // data
@@ -81,7 +70,7 @@ pub fn construct_elf(info: LinkingResult) -> Vec<u8> {
             p_paddr: data_segment_virt_addr as u64,
             p_filesz: data_segment_size as u64,
             p_memsz: data_segment_size as u64,
-            p_flags: data_segment_flags as u32,
+            p_flags: data_segment_flags,
             p_align: 0x1000,
         },
         // gnu stack
@@ -92,7 +81,7 @@ pub fn construct_elf(info: LinkingResult) -> Vec<u8> {
             p_paddr: gnu_stack_segment_virt_addr as u64,
             p_filesz: gnu_stack_segment_size as u64,
             p_memsz: gnu_stack_segment_size as u64,
-            p_flags: gnu_stack_segment_flags as u32,
+            p_flags: gnu_stack_segment_flags,
             p_align: 0x10,
         },
     ];
@@ -200,13 +189,13 @@ pub fn construct_elf(info: LinkingResult) -> Vec<u8> {
     // Write program headers into the ELF
     for (i, ph) in program_headers.into_iter().enumerate() {
         let offset = start_of_program_headers + i * single_program_header_size;
-        final_blob.pwrite_with(ph, offset, ctx.clone()).unwrap();
+        final_blob.pwrite_with(ph, offset, ctx).unwrap();
     }
 
     // Write section headers into the ELF
     for (i, sh) in section_headers.into_iter().enumerate() {
         let offset = start_of_section_headers + i * single_section_header_size;
-        final_blob.pwrite_with(sh, offset, ctx.clone()).unwrap();
+        final_blob.pwrite_with(sh, offset, ctx).unwrap();
     }
 
     // Write .text section content
