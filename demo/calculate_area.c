@@ -1,0 +1,1 @@
+int calculate_rectangle_area(int width, int height) { return width * height; }
