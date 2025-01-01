@@ -2,7 +2,7 @@
 
 <p align="center"><b>A fast <a href="https://en.wikipedia.org/wiki/Linker_(computing)#Static_linking">static linker</a> to produce 64 bit <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">ELF</a> executables</b></p>
 
-This is a project I made to improve my understanding of how static linking works (combining object files into executables). Also, to get better at parsing and producing binary formats. I decided the best way to achieve these things was to create my own simple linker :D
+This is a project I made to improve my understanding of how static linking works (combining object files into executables). Also, to get better at parsing and producing binary formats. I decided a fun way to achieve these things was to create my own simple linker.
 
 ## Demo
 
