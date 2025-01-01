@@ -1,3 +1,5 @@
 benchmarking/* linguist-generated
-demo/* linguist-generated
+# demo/* linguist-generated
 generate_bench_input.py linguist-generated
+run_latch.sh linguist-generated
+run_ld.sh linguist-generated
