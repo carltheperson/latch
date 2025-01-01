@@ -80,7 +80,7 @@ No version information found in this file.
 
 This isn't exactly fair since `ld` has to consider a much more comprehensive feature-set.
 
-But just for fun, I ran a benchmark of linking the 100+ generated C files in `benchmark/`.
+But just for fun, I ran a benchmark of linking the 100+ generated C files in `benchmarking/`.
 
 In this specific case it took on average `latch` 1.2 ms and `ld` 10.8 ms.
 
