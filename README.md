@@ -2,13 +2,11 @@
 
 <p align="center"><b>A fast <a href="https://en.wikipedia.org/wiki/Linker_(computing)#Static_linking">static linker</a> to produce 64 bit <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">ELF</a> executables</b></p>
 
-> [!IMPORTANT]  
-> This is a **toy** project. [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) is quite an extensive format and only a small subset is supported.
-
+This is a project I made to improve my understanding of how static linking works (combining object files into executables). Also, to get better at parsing and producing binary formats. I decided the best way to achieve these things was to create my own simple linker :D
 
 ## Demo
 
-An example of compiling some C files into object files which are then linked.
+Below is an example of compiling some C files into object files, which are then linked.
 
 Source files in `demo/`
 
@@ -89,6 +87,10 @@ In this specific case it took on average `latch` 1.2 ms and `ld` 10.8 ms.
 ![benchmark](./bench_res.png)
 
 Preformed on my `Lenovo ThinkPad X1 Carbon Gen 8, 16.0 GiB, Intel® Core™ i5-10210U × 8`
+
+## Note
+
+This is a **toy** project. [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) is quite an extensive format and only a small subset is supported.
 
 # License
 
